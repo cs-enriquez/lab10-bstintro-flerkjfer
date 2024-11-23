@@ -6,10 +6,16 @@ using namespace std;
 class Node {
 	public:
 		// the Node should contain
-		// 	- an integer "key" that holds the value of the Node
-		// 	- a pointer to each child possible child node ("right" and "left")
+		int key;// 	- an integer "key" that holds the value of the Node
+		Node *left = nullptr; 
+		Node *right = nullptr; 
 
 
+		Node(int inkey){
+			key = inkey;
+			right = nullptr; 
+			left = nullptr; 
+		}
 		// Write a constructor for the Node
 		// input: only an integer value for "key", no pointer arguments
 		// 		right and left pointers should be null
@@ -21,38 +27,58 @@ class Node {
 // {13, 0, 7, 6, 21, 15, -2, 12, 99, 18, 19, -1}
 Node* createTree() {
 	// root
-	Node *root = nullptr;
+	Node *root = new Node(13);
 
 	// level 1 (children of root)
+	root -> left = new Node(0); 
+	root -> right = new Node(21); 
 
 	// level 2 (children of 0)
+	root -> left -> left = new Node(-2);
+	root -> left -> right = new Node(7); 
+
 
 	// level 2 (children of 21)
+	root -> right -> left = new Node(15); 
+	root -> right -> right = new Node(99); 
 
 	// level 3 (children of -2)
+	root -> left -> left -> left = new Node(-1);
 
 	// level 3 (children of 7)
+	root -> left -> right -> left = new Node(6);
+	root -> left -> right -> right = new Node(12);
 
 	// level 3 (children of 15)
+	root -> right -> left -> right = new Node(18); 
 
 	// level 3 (children of 99)
 
 	// level 4 (children of 18)
-
-	return root;
+	root -> right -> left -> right -> right = new Node(19); 
+	return root; 
 }
 
 // Write a function that will search the BST for a target value
-//	input: integer target to search for,
-			// pointer to root Node
+//	input: integer target to search for, // pointer to root Node
 // 	returns: true or false depending on if the value is found
-// You should write this function recursively! What is the base case? What is the general case?
+// You should write this fun=ction recursively! What is the base case? What is the general case?
 bool searchTree(int target, Node* root) {
 	// Base cases
-	return false;
+	if(root == nullptr){
+		return false;
+	}
+	if(root -> key == target){
+		return true; 
+	}
 
-	// General case
-	return false;
+	//general
+	else{
+		if(root -> key < target){
+			return searchTree(target, root -> right); //self note to not forget name of function and all parameters!!!
+		}
+		else {return searchTree(target, root -> left);}
+	}
 	
 }
 
@@ -62,18 +88,34 @@ bool searchTree(int target, Node* root) {
 // You should write this function recursively!
 int treeSize(Node* root) {
 	// base case
-	return -1;
+	
+	if(root == nullptr){
+		return 0;
+	}
+	
 
 	// General case
-	return -1;
+	return 1 + treeSize(root -> left) + treeSize(root -> right); 
 
 }
 
 // BONUS! Write a function that will determine the height of the tree
 int treeHeight(Node* root) {
 	// base case
-	return -1;
+	if(root == nullptr){
+		return -1;
+	}
 
-	// General case
-	return -1;
+	//general case 
+	else{
+		int right = treeHeight(root -> right); 
+		int left = treeHeight(root -> left);
+
+		if (right > left){
+			return 1 + treeHeight(root -> right); 
+		}
+		else {return 1 + treeHeight(root -> left);}
+
+	}
+	
 }
